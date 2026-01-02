@@ -42,99 +42,206 @@ const experiences = [
 
 export default function Experience() {
   const sectionRef = useRef<HTMLElement>(null)
-  const titleRef = useRef<HTMLHeadingElement>(null)
-  const cardsRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const cardsRef = useRef<(HTMLDivElement | null)[]>([])
+  const progressRef = useRef<HTMLDivElement>(null)
+  const counterRef = useRef<HTMLSpanElement>(null)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Title animation
-      gsap.from(titleRef.current, {
-        scrollTrigger: {
-          trigger: titleRef.current,
-          start: "top 80%",
-          toggleActions: "play none none reverse",
-        },
-        x: -100,
+      const cards = cardsRef.current.filter(Boolean) as HTMLDivElement[]
+      const totalCards = cards.length
+
+      // Set initial states - all cards start off-screen to the right
+      gsap.set(cards, {
+        xPercent: 100,
         opacity: 0,
-        duration: 1,
-        ease: "power3.out",
+        scale: 0.8,
       })
 
-      // Cards stagger animation
-      const cards = cardsRef.current?.children || []
-      gsap.from(cards, {
+      // Create the main scroll-jack timeline
+      const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: cardsRef.current,
-          start: "top 75%",
-          toggleActions: "play none none reverse",
+          trigger: sectionRef.current,
+          start: "top top",
+          end: () => `+=${window.innerHeight * totalCards}`,
+          scrub: 1,
+          pin: true,
+          anticipatePin: 1,
+          onUpdate: (self) => {
+            // Update progress bar
+            if (progressRef.current) {
+              gsap.to(progressRef.current, {
+                scaleX: self.progress,
+                duration: 0.1,
+                ease: "none",
+              })
+            }
+            // Update counter
+            if (counterRef.current) {
+              const currentIndex = Math.min(Math.floor(self.progress * totalCards), totalCards - 1)
+              counterRef.current.textContent = String(currentIndex + 1).padStart(2, "0")
+            }
+          },
         },
-        y: 80,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.15,
-        ease: "power3.out",
       })
 
-      // Horizontal scroll on desktop
-      if (window.innerWidth >= 768) {
-        const scrollContainer = cardsRef.current
-        if (scrollContainer) {
-          const scrollWidth = scrollContainer.scrollWidth - scrollContainer.clientWidth
+      // Animate each card in sequence
+      cards.forEach((card, index) => {
+        const isEven = index % 2 === 0
 
-          gsap.to(scrollContainer, {
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: "top 20%",
-              end: () => `+=${scrollWidth}`,
-              scrub: 1,
-              pin: true,
-              anticipatePin: 1,
+        // Card enters from alternating sides
+        tl.to(
+          card,
+          {
+            xPercent: 0,
+            opacity: 1,
+            scale: 1,
+            duration: 1,
+            ease: "power2.out",
+          },
+          index * 1.5,
+        )
+
+        // Card content stagger animation
+        const content = card.querySelector(".card-content")
+        const skills = card.querySelectorAll(".skill-tag")
+
+        tl.from(
+          content,
+          {
+            y: 30,
+            opacity: 0,
+            duration: 0.5,
+            ease: "power2.out",
+          },
+          index * 1.5 + 0.3,
+        )
+
+        tl.from(
+          skills,
+          {
+            y: 20,
+            opacity: 0,
+            stagger: 0.05,
+            duration: 0.3,
+            ease: "power2.out",
+          },
+          index * 1.5 + 0.5,
+        )
+
+        // If not the last card, animate current card out to opposite side
+        if (index < totalCards - 1) {
+          tl.to(
+            card,
+            {
+              xPercent: isEven ? -100 : 100,
+              opacity: 0,
+              scale: 0.8,
+              duration: 1,
+              ease: "power2.in",
             },
-            x: -scrollWidth,
-            ease: "none",
-          })
+            index * 1.5 + 1,
+          )
         }
-      }
+      })
     }, sectionRef)
 
     return () => ctx.revert()
   }, [])
 
   return (
-    <section ref={sectionRef} id="experience" className="py-24 px-6 overflow-hidden">
-      <div className="max-w-6xl mx-auto">
-        <h2 ref={titleRef} className="text-3xl sm:text-4xl md:text-5xl font-bold mb-16">
-          <span className="text-accent">03.</span> Experience
-        </h2>
+    <section ref={sectionRef} id="experience" className="relative h-screen w-full overflow-hidden bg-background">
+      {/* Background grid pattern */}
+      <div className="absolute inset-0 opacity-5">
+        <div
+          className="h-full w-full"
+          style={{
+            backgroundImage: `linear-gradient(var(--accent) 1px, transparent 1px),
+                              linear-gradient(90deg, var(--accent) 1px, transparent 1px)`,
+            backgroundSize: "100px 100px",
+          }}
+        />
+      </div>
 
-        <div ref={cardsRef} className="flex flex-col md:flex-row gap-6 md:gap-8 md:w-max">
-          {experiences.map((exp, index) => (
-            <div
-              key={exp.company}
-              className="group relative p-6 md:p-8 bg-card border border-border hover:border-accent/50 transition-colors md:w-[320px] flex-shrink-0"
-            >
-              <div className="absolute top-6 right-6 text-5xl md:text-6xl font-bold text-muted/20 group-hover:text-accent/20 transition-colors">
+      {/* Fixed header */}
+      <div className="absolute top-0 left-0 right-0 z-20 p-6 md:p-12">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold">
+            <span className="text-accent">03.</span> Experience
+          </h2>
+
+          {/* Progress indicator */}
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-muted-foreground font-mono">
+              <span ref={counterRef} className="text-accent text-lg">
+                01
+              </span>
+              <span className="mx-1">/</span>
+              <span>{String(experiences.length).padStart(2, "0")}</span>
+            </span>
+          </div>
+        </div>
+
+        {/* Progress bar */}
+        <div className="max-w-7xl mx-auto mt-4">
+          <div className="h-[2px] bg-border overflow-hidden">
+            <div ref={progressRef} className="h-full bg-accent origin-left" style={{ transform: "scaleX(0)" }} />
+          </div>
+        </div>
+      </div>
+
+      {/* Cards container */}
+      <div ref={containerRef} className="absolute inset-0 flex items-center justify-center pt-24">
+        {experiences.map((exp, index) => (
+          <div
+            key={exp.company}
+            ref={(el) => {
+              cardsRef.current[index] = el
+            }}
+            className="absolute w-[90vw] max-w-2xl"
+          >
+            <div className="group relative p-8 md:p-12 bg-card border border-border hover:border-accent/50 transition-colors">
+              {/* Large background period */}
+              <div className="absolute top-4 right-4 md:top-8 md:right-8 text-[8rem] md:text-[12rem] font-bold text-accent/5 leading-none select-none">
                 {exp.period}
               </div>
 
-              <div className="relative z-10">
-                <span className="text-accent text-sm font-medium">{exp.period}</span>
-                <h3 className="text-xl font-bold mt-2 mb-1">{exp.company}</h3>
-                <p className="text-muted-foreground text-sm mb-6">{exp.role}</p>
+              <div className="card-content relative z-10">
+                {/* Period badge */}
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-accent/10 border border-accent/20 mb-6">
+                  <span className="w-2 h-2 bg-accent rounded-full animate-pulse" />
+                  <span className="text-accent text-sm font-mono">{exp.period}</span>
+                </div>
 
-                <div className="flex flex-wrap gap-2">
+                {/* Company & Role */}
+                <h3 className="text-3xl md:text-4xl font-bold mb-2">{exp.company}</h3>
+                <p className="text-muted-foreground text-lg md:text-xl mb-8">{exp.role}</p>
+
+                {/* Skills */}
+                <div className="flex flex-wrap gap-3">
                   {exp.skills.map((skill) => (
-                    <span key={skill} className="text-xs text-muted-foreground hover:text-accent transition-colors">
+                    <span
+                      key={skill}
+                      className="skill-tag px-3 py-1 text-sm border border-border text-muted-foreground hover:text-accent hover:border-accent/50 transition-colors cursor-default"
+                    >
                       {skill}
                     </span>
                   ))}
                 </div>
               </div>
 
-              <div className="absolute bottom-0 left-0 h-1 w-0 bg-accent group-hover:w-full transition-all duration-500" />
+              {/* Bottom accent line */}
+              <div className="absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r from-accent via-accent/50 to-transparent" />
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Scroll hint */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-muted-foreground">
+        <span className="text-xs font-mono uppercase tracking-widest">Scroll</span>
+        <div className="w-[1px] h-8 bg-gradient-to-b from-accent to-transparent animate-pulse" />
       </div>
     </section>
   )
