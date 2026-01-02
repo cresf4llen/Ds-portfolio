@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import Image from "next/image"
+import GlowButton from "./glow-button"
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -121,12 +122,7 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
         </div>
 
         {project.url && (
-          <a
-            href={project.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-sm text-foreground hover:text-accent transition-colors group"
-          >
+          <GlowButton href={project.url} variant="outline" size="sm" external>
             View Project
             <svg
               width="16"
@@ -139,7 +135,7 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
             >
               <path d="M7 17L17 7M17 7H7M17 7V17" />
             </svg>
-          </a>
+          </GlowButton>
         )}
       </div>
     </div>

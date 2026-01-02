@@ -1,115 +1,180 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import ThreeScene from "./three-scene"
+import GlowButton from "./glow-button"
 
 gsap.registerPlugin(ScrollTrigger)
 
-export default function Hero() {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const titleRef = useRef<HTMLHeadingElement>(null)
-  const subtitleRef = useRef<HTMLParagraphElement>(null)
-  const scrollIndicatorRef = useRef<HTMLDivElement>(null)
+function AnimatedText({
+  text,
+  className,
+  delay = 0,
+  stagger = 0.03,
+}: {
+  text: string
+  className?: string
+  delay?: number
+  stagger?: number
+}) {
+  const containerRef = useRef<HTMLSpanElement>(null)
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Title animation
-      gsap.from(titleRef.current, {
-        y: 100,
-        opacity: 0,
-        duration: 1.2,
-        ease: "power4.out",
-        delay: 0.3,
-      })
+    if (!containerRef.current) return
 
-      // Subtitle animation
-      gsap.from(subtitleRef.current, {
-        y: 50,
+    const chars = containerRef.current.querySelectorAll(".char")
+
+    gsap.fromTo(
+      chars,
+      {
+        y: 120,
         opacity: 0,
+        rotateX: -90,
+      },
+      {
+        y: 0,
+        opacity: 1,
+        rotateX: 0,
         duration: 1,
-        ease: "power3.out",
-        delay: 0.6,
-      })
+        ease: "power4.out",
+        stagger: stagger,
+        delay: delay,
+      },
+    )
+  }, [delay, stagger])
 
-      // Scroll indicator bounce
-      gsap.to(scrollIndicatorRef.current, {
-        y: 10,
+  return (
+    <span ref={containerRef} className={className} style={{ perspective: "1000px" }}>
+      {text.split("").map((char, i) => (
+        <span key={i} className="char inline-block" style={{ transformStyle: "preserve-3d" }}>
+          {char === " " ? "\u00A0" : char}
+        </span>
+      ))}
+    </span>
+  )
+}
+
+export default function Hero() {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const overlayRef = useRef<HTMLDivElement>(null)
+  const taglineRef = useRef<HTMLDivElement>(null)
+  const buttonsRef = useRef<HTMLDivElement>(null)
+  const scrollIndicatorRef = useRef<HTMLDivElement>(null)
+  const [isLoaded, setIsLoaded] = useState(false)
+
+  useEffect(() => {
+    // Trigger animations after mount
+    const timer = setTimeout(() => setIsLoaded(true), 100)
+    return () => clearTimeout(timer)
+  }, [])
+
+  useEffect(() => {
+    if (!isLoaded) return
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        taglineRef.current,
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1, ease: "power3.out", delay: 1.2 },
+      )
+
+      gsap.fromTo(
+        buttonsRef.current?.children || [],
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, ease: "power3.out", stagger: 0.15, delay: 1.5 },
+      )
+
+      gsap.fromTo(scrollIndicatorRef.current, { opacity: 0 }, { opacity: 1, duration: 1, delay: 2 })
+
+      gsap.to(scrollIndicatorRef.current?.querySelector(".scroll-line"), {
+        scaleY: 1,
         duration: 1,
         ease: "power2.inOut",
         repeat: -1,
         yoyo: true,
       })
 
-      // Parallax scroll effect
-      gsap.to(titleRef.current, {
+      gsap.to(overlayRef.current, {
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top top",
           end: "bottom top",
           scrub: 1,
         },
-        y: -100,
+        y: -150,
         opacity: 0,
+        scale: 0.95,
       })
     }, containerRef)
 
     return () => ctx.revert()
-  }, [])
+  }, [isLoaded])
 
   return (
     <section ref={containerRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
       <ThreeScene />
 
-      <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
-        <h1 ref={titleRef} className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6">
-          <span className="block text-foreground">Dachi</span>
-          <span className="block text-accent">Sebiskveradze</span>
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent z-[1]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-transparent to-transparent z-[1]" />
+
+      <div ref={overlayRef} className="relative z-10 text-center px-4 w-full">
+        <h1 className="overflow-hidden mb-2">
+          <AnimatedText
+            text="DACHI"
+            className="block text-[15vw] md:text-[12vw] lg:text-[10vw] font-bold tracking-tighter leading-[0.85] text-foreground"
+            delay={0.2}
+            stagger={0.05}
+          />
+        </h1>
+        <h1 className="overflow-hidden">
+          <AnimatedText
+            text="SEBISKVERADZE"
+            className="block text-[8vw] md:text-[6vw] lg:text-[5vw] font-bold tracking-tight leading-[0.9] text-accent"
+            delay={0.5}
+            stagger={0.03}
+          />
         </h1>
 
-        <p
-          ref={subtitleRef}
-          className="text-muted-foreground text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed"
+        <div
+          ref={taglineRef}
+          className="mt-8 md:mt-12 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-muted-foreground opacity-0"
         >
-          <span className="text-accent">{"<"}</span>
-          Fullstack Developer
-          <span className="text-accent">{" />"}</span> specializing in Angular, React, and WebGL Animations
-        </p>
+          <span className="text-accent font-mono text-lg md:text-xl">{"{"}</span>
+          <span className="text-sm md:text-base lg:text-lg tracking-wide uppercase">Fullstack Developer</span>
+          <span className="hidden sm:inline text-accent">•</span>
+          <span className="text-sm md:text-base lg:text-lg tracking-wide uppercase">Angular & React</span>
+          <span className="hidden sm:inline text-accent">•</span>
+          <span className="text-sm md:text-base lg:text-lg tracking-wide uppercase">WebGL Animations</span>
+          <span className="text-accent font-mono text-lg md:text-xl">{"}"}</span>
+        </div>
 
-        <div className="mt-12 flex items-center justify-center gap-6">
-          <a
-            href="#projects"
-            className="px-6 py-3 bg-accent text-accent-foreground font-medium text-sm tracking-wide hover:bg-accent/90 transition-colors"
-          >
+        <div ref={buttonsRef} className="mt-12 md:mt-16 flex items-center justify-center gap-4 md:gap-6">
+          <GlowButton href="#projects" variant="primary" size="lg" pill>
             View Work
-          </a>
-          <a
-            href="#contact"
-            className="px-6 py-3 border border-border text-foreground font-medium text-sm tracking-wide hover:border-accent hover:text-accent transition-colors"
-          >
-            Contact
-          </a>
+          </GlowButton>
+          <GlowButton href="#contact" variant="outline" size="lg" pill>
+            Get in Touch
+          </GlowButton>
         </div>
       </div>
 
       <div
         ref={scrollIndicatorRef}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-muted-foreground"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 opacity-0"
       >
-        <span className="text-xs tracking-widest uppercase">Scroll</span>
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M12 5v14M19 12l-7 7-7-7" />
-        </svg>
+        <span className="text-xs tracking-[0.3em] uppercase text-muted-foreground">Scroll</span>
+        <div className="w-[1px] h-12 bg-muted-foreground/30 overflow-hidden">
+          <div className="scroll-line w-full h-full bg-accent origin-top scale-y-0" />
+        </div>
+      </div>
+
+      <div className="absolute bottom-8 left-8 text-muted-foreground/50 font-mono text-xs hidden md:block z-10">
+        <span className="text-accent">01</span> / PORTFOLIO
+      </div>
+      <div className="absolute bottom-8 right-8 text-muted-foreground/50 font-mono text-xs hidden md:block z-10">
+        2025
       </div>
     </section>
   )

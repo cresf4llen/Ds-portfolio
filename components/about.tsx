@@ -65,17 +65,28 @@ export default function About() {
       })
 
       // Skills animation
-      gsap.from(skillsRef.current?.children || [], {
+      const skillItems = skillsRef.current?.children || []
+      gsap.set(skillItems, {
+        x: 60,
+        opacity: 0,
+        rotateY: -15,
+      })
+
+      gsap.to(skillItems, {
         scrollTrigger: {
           trigger: skillsRef.current,
           start: "top 80%",
           toggleActions: "play none none reverse",
         },
-        scale: 0,
-        opacity: 0,
-        duration: 0.5,
-        stagger: 0.05,
-        ease: "back.out(1.7)",
+        x: 0,
+        opacity: 1,
+        rotateY: 0,
+        duration: 0.6,
+        stagger: {
+          each: 0.08,
+          from: "start",
+        },
+        ease: "power2.out",
       })
     }, sectionRef)
 
@@ -106,11 +117,12 @@ export default function About() {
 
           <div>
             <h3 className="text-sm uppercase tracking-widest text-muted-foreground mb-6">Tech Stack</h3>
-            <div ref={skillsRef} className="flex flex-wrap gap-3">
+            <div ref={skillsRef} className="flex flex-wrap gap-3" style={{ perspective: "1000px" }}>
               {techStack.map((tech) => (
                 <span
                   key={tech}
-                  className="px-4 py-2 bg-secondary text-secondary-foreground text-sm border border-border hover:border-accent hover:text-accent transition-colors cursor-default"
+                  className="px-4 py-2 bg-secondary text-secondary-foreground text-sm border border-border hover:border-accent hover:text-accent transition-all duration-300 cursor-default hover:translate-x-1"
+                  style={{ transformStyle: "preserve-3d" }}
                 >
                   {tech}
                 </span>

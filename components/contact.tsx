@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import GlowButton from "./glow-button"
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -104,21 +105,18 @@ export default function Contact() {
             }
           </p>
 
-          <a
-            href="mailto:contact@swiftdev.agency"
-            className="inline-block px-8 py-4 bg-accent text-accent-foreground font-medium text-lg tracking-wide hover:bg-accent/90 transition-colors mb-12"
-          >
+          <GlowButton href="mailto:contact@swiftdev.agency" variant="primary" size="lg" pill>
             Say Hello
-          </a>
+          </GlowButton>
 
-          <div className="flex items-center justify-center gap-6">
+          <div className="flex items-center justify-center gap-6 mt-12">
             {socialLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-3 text-muted-foreground hover:text-accent transition-colors"
+                className="p-3 text-muted-foreground hover:text-accent hover:scale-110 hover:shadow-[0_0_15px_rgba(232,76,48,0.4)] transition-all duration-300"
                 aria-label={link.name}
               >
                 {link.icon}
