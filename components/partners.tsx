@@ -14,6 +14,7 @@ const partners = [
     logo: "/images/papa-production-20logo-20no-20bg.png",
     url: "https://www.papa-production.com",
     preview: "/images/papa-production-preview.png",
+    logoSize: "h-16 sm:h-20",
   },
   {
     name: "Swift Development",
@@ -21,6 +22,7 @@ const partners = [
     logo: "/images/swiftdevlogo-20no-20bg.png",
     url: "https://www.swiftdev.agency",
     preview: "/images/swiftdev-preview.png",
+    logoSize: "h-24 sm:h-32",
   },
 ]
 
@@ -106,9 +108,12 @@ export default function Partners() {
   return (
     <section ref={sectionRef} className="py-24 px-4 sm:px-6 border-t border-border overflow-hidden">
       <div className="max-w-6xl mx-auto">
-        <h2 ref={titleRef} className="text-xl sm:text-2xl font-medium text-center mb-16 tracking-[0.3em] uppercase">
+        <h2 ref={titleRef} className="text-xl sm:text-2xl font-medium text-center mb-4 tracking-[0.3em] uppercase">
           Partnered With
         </h2>
+        <p className="text-center text-muted-foreground text-sm sm:text-base mb-16 max-w-xl mx-auto">
+          Websites I fully designed and developed from the ground up
+        </p>
 
         <div ref={cardsRef} className="flex flex-col gap-12">
           {partners.map((partner, index) => (
@@ -117,13 +122,15 @@ export default function Partners() {
               href={partner.url}
               target="_blank"
               rel="noopener noreferrer"
-              className={`partner-card group grid grid-cols-1 lg:grid-cols-2 gap-6 items-center ${
+              className={`partner-card group grid grid-cols-1 lg:grid-cols-2 gap-6 items-end ${
                 index % 2 === 1 ? "lg:direction-rtl" : ""
               }`}
             >
               {/* Logo side */}
-              <div className={`flex flex-col ${index % 2 === 1 ? "lg:order-2" : "lg:order-1"}`}>
-                <div className="relative w-full max-w-[200px] sm:max-w-xs h-16 sm:h-24 mb-4 brightness-0 invert group-hover:brightness-100 group-hover:invert-0 transition-all duration-500">
+              <div className={`flex flex-col justify-end ${index % 2 === 1 ? "lg:order-2" : "lg:order-1"}`}>
+                <div
+                  className={`relative w-full max-w-[200px] sm:max-w-xs ${partner.logoSize} mb-2 brightness-0 invert group-hover:brightness-100 group-hover:invert-0 transition-all duration-500`}
+                >
                   <Image
                     src={partner.logo || "/placeholder.svg"}
                     alt={partner.name}

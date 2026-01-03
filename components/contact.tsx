@@ -1,9 +1,8 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import GlowButton from "./glow-button"
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -26,103 +25,174 @@ const socialLinks = [
       </svg>
     ),
   },
-  {
-    name: "Email",
-    url: "mailto:contact@swiftdev.agency",
-    icon: (
-      <svg
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <rect width="20" height="16" x="2" y="4" rx="2" />
-        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-      </svg>
-    ),
-  },
 ]
 
 export default function Contact() {
   const sectionRef = useRef<HTMLElement>(null)
-  const titleRef = useRef<HTMLDivElement>(null)
-  const contentRef = useRef<HTMLDivElement>(null)
+  const cardRef = useRef<HTMLDivElement>(null)
+  const lettersRef = useRef<HTMLDivElement>(null)
+  const [copied, setCopied] = useState(false)
+
+  const copyEmail = () => {
+    navigator.clipboard.writeText("dachisebiskveradze7@gmail.com")
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Title animation with split text effect
-      gsap.from(titleRef.current?.children || [], {
+      // Animate the card sliding up
+      gsap.from(cardRef.current, {
         scrollTrigger: {
-          trigger: titleRef.current,
-          start: "top 80%",
+          trigger: cardRef.current,
+          start: "top 85%",
           toggleActions: "play none none reverse",
         },
         y: 100,
         opacity: 0,
         duration: 1,
-        stagger: 0.05,
         ease: "power4.out",
       })
 
-      // Content animation
-      gsap.from(contentRef.current?.children || [], {
-        scrollTrigger: {
-          trigger: contentRef.current,
-          start: "top 80%",
-          toggleActions: "play none none reverse",
-        },
-        y: 50,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.1,
-        ease: "power3.out",
-        delay: 0.3,
-      })
+      // Animate each letter with stagger
+      const letters = lettersRef.current?.querySelectorAll(".letter-row")
+      if (letters) {
+        gsap.from(letters, {
+          scrollTrigger: {
+            trigger: lettersRef.current,
+            start: "top 80%",
+            toggleActions: "play none none reverse",
+          },
+          y: 80,
+          opacity: 0,
+          duration: 0.8,
+          stagger: 0.1,
+          ease: "power3.out",
+        })
+      }
     }, sectionRef)
 
     return () => ctx.revert()
   }, [])
 
+  // Animated text - wodniack style with stacked letters
+  const words = ["LET'S", "WORK", "TOGETHER"]
+
   return (
-    <section ref={sectionRef} id="contact" className="min-h-screen py-24 px-6 flex items-center justify-center">
-      <div className="max-w-4xl mx-auto text-center">
-        <div ref={titleRef} className="mb-8">
-          <span className="text-accent text-sm font-medium tracking-widest uppercase mb-4 block">04. Contact</span>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold">
-            <span className="block">{"Let's Work"}</span>
-            <span className="block text-accent">Together</span>
-          </h2>
+    <section
+      ref={sectionRef}
+      id="contact"
+      className="min-h-screen py-24 px-4 sm:px-6 flex items-center justify-center relative overflow-hidden"
+    >
+      {/* Subtle background elements */}
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-background/95" />
+      <div className="absolute top-1/4 -left-32 w-64 h-64 bg-accent/5 rounded-full blur-[100px]" />
+      <div className="absolute bottom-1/4 -right-32 w-64 h-64 bg-accent/5 rounded-full blur-[100px]" />
+
+      {/* Main card container */}
+      <div
+        ref={cardRef}
+        className="relative w-full max-w-4xl mx-auto bg-gradient-to-br from-foreground/[0.03] to-foreground/[0.01] border border-foreground/10 rounded-2xl p-8 sm:p-12 md:p-16 backdrop-blur-sm"
+      >
+        {/* Corner accents */}
+        <div className="absolute top-0 left-0 w-16 h-16 border-l-2 border-t-2 border-accent/40 rounded-tl-2xl" />
+        <div className="absolute top-0 right-0 w-16 h-16 border-r-2 border-t-2 border-accent/40 rounded-tr-2xl" />
+        <div className="absolute bottom-0 left-0 w-16 h-16 border-l-2 border-b-2 border-accent/40 rounded-bl-2xl" />
+        <div className="absolute bottom-0 right-0 w-16 h-16 border-r-2 border-b-2 border-accent/40 rounded-br-2xl" />
+
+        {/* Section label */}
+        <span className="text-accent text-sm font-medium tracking-widest uppercase mb-8 block">04. Contact</span>
+
+        {/* Animated stacked text */}
+        <div ref={lettersRef} className="mb-12">
+          {words.map((word, wordIndex) => (
+            <div key={wordIndex} className="letter-row overflow-hidden">
+              <h2
+                className={`text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-[0.9] tracking-tight ${
+                  wordIndex === 1 ? "text-accent" : "text-foreground"
+                }`}
+              >
+                {word}
+              </h2>
+            </div>
+          ))}
         </div>
 
-        <div ref={contentRef}>
-          <p className="text-muted-foreground text-lg max-w-xl mx-auto mb-12 leading-relaxed">
-            {
-              "I'm currently available for freelance work and exciting opportunities. If you have a project that needs creative frontend development or full-stack expertise, let's talk."
-            }
+        {/* Email section */}
+        <div className="space-y-6">
+          <p className="text-muted-foreground text-base sm:text-lg max-w-md leading-relaxed">
+            Got a project in mind? Let's create something amazing together. Drop me a line and let's chat.
           </p>
 
-          <GlowButton href="mailto:contact@swiftdev.agency" variant="primary" size="lg" pill>
-            Say Hello
-          </GlowButton>
+          {/* Email with click to copy and mailto */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <a
+              href="mailto:dachisebiskveradze7@gmail.com"
+              className="group flex items-center gap-3 text-lg sm:text-xl md:text-2xl font-mono text-foreground hover:text-accent transition-colors duration-300"
+            >
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="shrink-0"
+              >
+                <rect width="20" height="16" x="2" y="4" rx="2" />
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+              </svg>
+              <span className="border-b border-dashed border-foreground/30 group-hover:border-accent pb-0.5 break-all">
+                dachisebiskveradze7@gmail.com
+              </span>
+            </a>
 
-          <div className="flex items-center justify-center gap-6 mt-12">
+            <button
+              onClick={copyEmail}
+              className="flex items-center gap-2 px-4 py-2 text-sm text-muted-foreground hover:text-foreground border border-foreground/10 hover:border-foreground/30 rounded-full transition-all duration-300 hover:bg-foreground/5"
+            >
+              {copied ? (
+                <>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                  Copied!
+                </>
+              ) : (
+                <>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+                    <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+                  </svg>
+                  Copy
+                </>
+              )}
+            </button>
+          </div>
+
+          {/* Social links */}
+          <div className="flex items-center gap-4 pt-6 border-t border-foreground/10 mt-8">
+            <span className="text-sm text-muted-foreground">Find me on</span>
             {socialLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-3 text-muted-foreground hover:text-accent hover:scale-110 hover:shadow-[0_0_15px_rgba(232,76,48,0.4)] transition-all duration-300"
+                className="p-2 text-muted-foreground hover:text-accent hover:scale-110 transition-all duration-300"
                 aria-label={link.name}
               >
                 {link.icon}
               </a>
             ))}
           </div>
+        </div>
+
+        {/* Decorative GO text like wodniack */}
+        <div className="absolute -bottom-4 -right-4 sm:bottom-8 sm:right-8 text-[80px] sm:text-[120px] font-bold text-foreground/[0.03] leading-none select-none pointer-events-none">
+          GO
         </div>
       </div>
     </section>
