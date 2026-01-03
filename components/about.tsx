@@ -18,15 +18,10 @@ const skills = [
 const techStack = [
   "Angular",
   "React",
-  "React Native",
-  "TypeScript",
-  "JavaScript",
-  "Three.js",
-  "GSAP",
-  "Supabase",
   "C#",
   ".NET Core",
-  "SQL Server",
+  "EF Core", 
+  "SQL",
 ]
 
 export default function About() {
@@ -103,11 +98,14 @@ export default function About() {
         <div className="grid md:grid-cols-2 gap-12 lg:gap-20">
           <div ref={textRef} className="space-y-6">
             <p className="text-muted-foreground leading-relaxed">
-              Fullstack Engineer with <span className="text-foreground">3 years of experience</span> specifically
-              expertise in frontend and Angular.
+              <span className="text-foreground font-semibold">18-year-old Fullstack Engineer</span> from Tbilisi, Georgia, 
+              with <span className="text-foreground">3 years of experience</span> and expertise in frontend and Angular. 
+              <span className="text-accent font-semibold"> Authorized to work in the United States</span> with a green card.
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              Built production applications processing payments and supporting hundreds of concurrent video users.
+              Placed <span className="text-foreground font-semibold">20th</span> in the largest national hackathon, 
+              developing <a href="https://www.devhealth.online/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">DevHealth</a> , 
+              a software/extension to optimize your coding.
             </p>
             <p className="text-muted-foreground leading-relaxed">
               Founded <span className="text-accent">SwiftDev Agency</span> serving international clients with
