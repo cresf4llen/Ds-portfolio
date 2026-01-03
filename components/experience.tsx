@@ -19,24 +19,28 @@ const experiences = [
       "Javascript",
       "MS SQL Server Programming and Administration",
     ],
+    url: "https://itstep.org/",
   },
   {
     period: "24-25",
     company: "Swift Development Agency",
     role: "Full Stack Lead Engineer",
     skills: ["Angular", "React", "React Native", "Supabase", "GSAP", "TypeScript"],
+    url: "https://www.swiftdev.agency/",
   },
   {
     period: "25",
     company: "KooberCoders",
     role: "Internship",
     skills: ["Angular", "React", "React Native", "Three.js", "GSAP", "TypeScript"],
+    url: "https://koobercoders.com/",
   },
   {
     period: "25",
     company: "DevHealth",
     role: "Full Stack Lead Engineer",
     skills: ["React", "TypeScript"],
+    url: "https://www.devhealth.online/",
   },
 ]
 
@@ -201,7 +205,13 @@ export default function Experience() {
             }}
             className="absolute w-[calc(100vw-2rem)] sm:w-[85vw] max-w-2xl px-2 sm:px-0"
           >
-            <div className="group relative p-4 sm:p-8 md:p-12 bg-card border border-border hover:border-accent/50 transition-colors">
+            {exp.url ? (
+              <a
+                href={exp.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block group relative p-4 sm:p-8 md:p-12 bg-card border border-border hover:border-accent/50 transition-colors cursor-pointer"
+              >
               {/* Large background period */}
               <div className="absolute top-2 right-2 sm:top-4 sm:right-4 md:top-8 md:right-8 text-[4rem] sm:text-[8rem] md:text-[12rem] font-bold text-accent/5 leading-none select-none">
                 {exp.period}
@@ -233,7 +243,42 @@ export default function Experience() {
 
               {/* Bottom accent line */}
               <div className="absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r from-accent via-accent/50 to-transparent" />
-            </div>
+              </a>
+            ) : (
+              <div className="group relative p-4 sm:p-8 md:p-12 bg-card border border-border hover:border-accent/50 transition-colors">
+                {/* Large background period */}
+                <div className="absolute top-2 right-2 sm:top-4 sm:right-4 md:top-8 md:right-8 text-[4rem] sm:text-[8rem] md:text-[12rem] font-bold text-accent/5 leading-none select-none">
+                  {exp.period}
+                </div>
+
+                <div className="card-content relative z-10">
+                  {/* Period badge */}
+                  <div className="inline-flex items-center gap-2 px-2 sm:px-3 py-1 bg-accent/10 border border-accent/20 mb-4 sm:mb-6">
+                    <span className="w-2 h-2 bg-accent rounded-full animate-pulse" />
+                    <span className="text-accent text-xs sm:text-sm font-mono">{exp.period}</span>
+                  </div>
+
+                  {/* Company & Role */}
+                  <h3 className="text-xl sm:text-3xl md:text-4xl font-bold mb-2 break-words">{exp.company}</h3>
+                  <p className="text-muted-foreground text-base sm:text-lg md:text-xl mb-6 sm:mb-8">{exp.role}</p>
+
+                  {/* Skills */}
+                  <div className="flex flex-wrap gap-2 sm:gap-3">
+                    {exp.skills.map((skill) => (
+                      <span
+                        key={skill}
+                        className="skill-tag px-2 sm:px-3 py-1 text-xs sm:text-sm border border-border text-muted-foreground hover:text-accent hover:border-accent/50 transition-colors cursor-default"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Bottom accent line */}
+                <div className="absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r from-accent via-accent/50 to-transparent" />
+              </div>
+            )}
           </div>
         ))}
       </div>

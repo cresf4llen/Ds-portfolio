@@ -19,6 +19,7 @@ const projects = [
     image: "/images/flinkos-webapp.png",
     year: "2024",
     type: "Website & Mobile App",
+    url: "https://www.flinkos.com/",
   },
   {
     id: 2,
@@ -91,28 +92,56 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
 
   return (
     <div ref={cardRef} className="grid md:grid-cols-12 gap-8 items-center py-16 md:py-24">
-      <div
-        ref={imageRef}
-        className={`md:col-span-7 relative aspect-video overflow-hidden bg-secondary ${isEven ? "md:order-1" : "md:order-2"}`}
-        style={{ clipPath: imageLoaded ? "inset(0 0 0 0)" : "inset(0 100% 0 0)" }}
-      >
-        {!imageLoaded && (
-          <div className="absolute inset-0 bg-secondary animate-pulse">
-            <div className="absolute inset-0 bg-gradient-to-r from-secondary via-muted/20 to-secondary skeleton-shimmer" />
-          </div>
-        )}
-        <Image
-          src={project.image || "/placeholder.svg"}
-          alt={project.title}
-          fill
-          className={`object-contain hover:scale-105 transition-all duration-700 ${
-            imageLoaded ? "opacity-100" : "opacity-0"
-          }`}
-          onLoad={() => setImageLoaded(true)}
-          priority={index === 0}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-background/50 to-transparent" />
-      </div>
+      {project.url ? (
+        <a
+          href={project.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`md:col-span-7 relative aspect-video overflow-hidden bg-secondary ${isEven ? "md:order-1" : "md:order-2"} cursor-pointer group`}
+          style={{ clipPath: imageLoaded ? "inset(0 0 0 0)" : "inset(0 100% 0 0)" }}
+          ref={imageRef}
+        >
+          {!imageLoaded && (
+            <div className="absolute inset-0 bg-secondary animate-pulse">
+              <div className="absolute inset-0 bg-gradient-to-r from-secondary via-muted/20 to-secondary skeleton-shimmer" />
+            </div>
+          )}
+          <Image
+            src={project.image || "/placeholder.svg"}
+            alt={project.title}
+            fill
+            className={`object-contain group-hover:scale-105 transition-all duration-700 ${
+              imageLoaded ? "opacity-100" : "opacity-0"
+            }`}
+            onLoad={() => setImageLoaded(true)}
+            priority={index === 0}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/50 to-transparent" />
+        </a>
+      ) : (
+        <div
+          ref={imageRef}
+          className={`md:col-span-7 relative aspect-video overflow-hidden bg-secondary ${isEven ? "md:order-1" : "md:order-2"}`}
+          style={{ clipPath: imageLoaded ? "inset(0 0 0 0)" : "inset(0 100% 0 0)" }}
+        >
+          {!imageLoaded && (
+            <div className="absolute inset-0 bg-secondary animate-pulse">
+              <div className="absolute inset-0 bg-gradient-to-r from-secondary via-muted/20 to-secondary skeleton-shimmer" />
+            </div>
+          )}
+          <Image
+            src={project.image || "/placeholder.svg"}
+            alt={project.title}
+            fill
+            className={`object-contain hover:scale-105 transition-all duration-700 ${
+              imageLoaded ? "opacity-100" : "opacity-0"
+            }`}
+            onLoad={() => setImageLoaded(true)}
+            priority={index === 0}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/50 to-transparent" />
+        </div>
+      )}
 
       <div ref={contentRef} className={`md:col-span-5 ${isEven ? "md:order-2 md:pl-8" : "md:order-1 md:pr-8"}`}>
         <div className="flex items-center gap-4 mb-4">
