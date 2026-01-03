@@ -11,6 +11,7 @@ const experiences = [
     period: "22-24",
     company: "IT Step Academy Georgia",
     role: "Bootcamp",
+    description: "Comprehensive full-stack development bootcamp covering modern web technologies, database management, and software engineering principles.",
     skills: [
       "Angular",
       "C#",
@@ -25,6 +26,7 @@ const experiences = [
     period: "24-25",
     company: "Swift Development Agency",
     role: "Full Stack Lead Engineer",
+    description: "Led development of multiple client projects, architected scalable solutions, and mentored team members while delivering high-quality web and mobile applications.",
     skills: ["Angular", "React", "React Native", "Supabase", "GSAP", "TypeScript"],
     url: "https://www.swiftdev.agency/",
   },
@@ -32,6 +34,7 @@ const experiences = [
     period: "25",
     company: "KooberCoders",
     role: "Internship",
+    description: "Worked on cutting-edge projects using modern frameworks, implemented 3D visualizations with Three.js, and contributed to interactive web experiences with advanced animations.",
     skills: ["Angular", "React", "React Native", "Three.js", "GSAP", "TypeScript"],
     url: "https://koobercoders.com/",
   },
@@ -39,6 +42,7 @@ const experiences = [
     period: "25",
     company: "DevHealth",
     role: "Full Stack Lead Engineer",
+    description: "Leading the development of a health-focused platform, building robust React applications with TypeScript, and ensuring optimal user experiences.",
     skills: ["React", "TypeScript"],
     url: "https://www.devhealth.online/",
   },
@@ -226,7 +230,14 @@ export default function Experience() {
 
                 {/* Company & Role */}
                 <h3 className="text-xl sm:text-3xl md:text-4xl font-bold mb-2 break-words">{exp.company}</h3>
-                <p className="text-muted-foreground text-base sm:text-lg md:text-xl mb-6 sm:mb-8">{exp.role}</p>
+                <p className="text-muted-foreground text-base sm:text-lg md:text-xl mb-4 sm:mb-6">{exp.role}</p>
+
+                {/* Description */}
+                {exp.description && (
+                  <p className="text-sm sm:text-base text-foreground/80 mb-6 sm:mb-8 leading-relaxed">
+                    {exp.description}
+                  </p>
+                )}
 
                 {/* Skills */}
                 <div className="flex flex-wrap gap-2 sm:gap-3">
@@ -260,7 +271,14 @@ export default function Experience() {
 
                   {/* Company & Role */}
                   <h3 className="text-xl sm:text-3xl md:text-4xl font-bold mb-2 break-words">{exp.company}</h3>
-                  <p className="text-muted-foreground text-base sm:text-lg md:text-xl mb-6 sm:mb-8">{exp.role}</p>
+                  <p className="text-muted-foreground text-base sm:text-lg md:text-xl mb-4 sm:mb-6">{exp.role}</p>
+
+                  {/* Description */}
+                  {exp.description && (
+                    <p className="text-sm sm:text-base text-foreground/80 mb-6 sm:mb-8 leading-relaxed">
+                      {exp.description}
+                    </p>
+                  )}
 
                   {/* Skills */}
                   <div className="flex flex-wrap gap-2 sm:gap-3">

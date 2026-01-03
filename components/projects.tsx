@@ -31,7 +31,7 @@ const projects = [
     image: "/images/eka-papamichail-portfolio.png",
     year: "2025",
     type: "Portfolio Website",
-    url: "https://eka-papamichail.vercel.app",
+    url: "https://ekapapamichail.vercel.app/",
   },
   {
     id: 3,
