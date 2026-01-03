@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 
@@ -31,13 +31,6 @@ export default function Contact() {
   const sectionRef = useRef<HTMLElement>(null)
   const cardRef = useRef<HTMLDivElement>(null)
   const lettersRef = useRef<HTMLDivElement>(null)
-  const [copied, setCopied] = useState(false)
-
-  const copyEmail = () => {
-    navigator.clipboard.writeText("dachisebiskveradze7@gmail.com")
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -124,8 +117,8 @@ export default function Contact() {
             Got a project in mind? Let's create something amazing together. Drop me a line and let's chat.
           </p>
 
-          {/* Email with click to copy and mailto */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+          {/* Email with mailto */}
+          <div>
             <a
               href="mailto:dachisebiskveradze7@gmail.com"
               className="group flex items-center gap-3 text-lg sm:text-xl md:text-2xl font-mono text-foreground hover:text-accent transition-colors duration-300"
@@ -148,28 +141,6 @@ export default function Contact() {
                 dachisebiskveradze7@gmail.com
               </span>
             </a>
-
-            <button
-              onClick={copyEmail}
-              className="flex items-center gap-2 px-4 py-2 text-sm text-muted-foreground hover:text-foreground border border-foreground/10 hover:border-foreground/30 rounded-full transition-all duration-300 hover:bg-foreground/5"
-            >
-              {copied ? (
-                <>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <polyline points="20 6 9 17 4 12" />
-                  </svg>
-                  Copied!
-                </>
-              ) : (
-                <>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
-                    <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
-                  </svg>
-                  Copy
-                </>
-              )}
-            </button>
           </div>
 
           {/* Social links */}
