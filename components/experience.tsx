@@ -165,16 +165,16 @@ export default function Experience() {
       </div>
 
       {/* Fixed header */}
-      <div className="absolute top-0 left-0 right-0 z-20 p-6 md:p-12">
+      <div className="absolute top-0 left-0 right-0 z-20 p-4 pt-24 sm:p-6 md:p-12 md:pt-28 overflow-hidden">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold">
             <span className="text-accent">03.</span> Experience
           </h2>
 
           {/* Progress indicator */}
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-muted-foreground font-mono">
-              <span ref={counterRef} className="text-accent text-lg">
+          <div className="flex items-center gap-2 sm:gap-4">
+            <span className="text-xs sm:text-sm text-muted-foreground font-mono">
+              <span ref={counterRef} className="text-accent text-base sm:text-lg">
                 01
               </span>
               <span className="mx-1">/</span>
@@ -192,38 +192,38 @@ export default function Experience() {
       </div>
 
       {/* Cards container */}
-      <div ref={containerRef} className="absolute inset-0 flex items-center justify-center pt-24">
+      <div ref={containerRef} className="absolute inset-0 flex items-center justify-center pt-24 overflow-hidden">
         {experiences.map((exp, index) => (
           <div
             key={exp.company}
             ref={(el) => {
               cardsRef.current[index] = el
             }}
-            className="absolute w-[90vw] max-w-2xl"
+            className="absolute w-[calc(100vw-2rem)] sm:w-[85vw] max-w-2xl px-2 sm:px-0"
           >
-            <div className="group relative p-8 md:p-12 bg-card border border-border hover:border-accent/50 transition-colors">
+            <div className="group relative p-4 sm:p-8 md:p-12 bg-card border border-border hover:border-accent/50 transition-colors">
               {/* Large background period */}
-              <div className="absolute top-4 right-4 md:top-8 md:right-8 text-[8rem] md:text-[12rem] font-bold text-accent/5 leading-none select-none">
+              <div className="absolute top-2 right-2 sm:top-4 sm:right-4 md:top-8 md:right-8 text-[4rem] sm:text-[8rem] md:text-[12rem] font-bold text-accent/5 leading-none select-none">
                 {exp.period}
               </div>
 
               <div className="card-content relative z-10">
                 {/* Period badge */}
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-accent/10 border border-accent/20 mb-6">
+                <div className="inline-flex items-center gap-2 px-2 sm:px-3 py-1 bg-accent/10 border border-accent/20 mb-4 sm:mb-6">
                   <span className="w-2 h-2 bg-accent rounded-full animate-pulse" />
-                  <span className="text-accent text-sm font-mono">{exp.period}</span>
+                  <span className="text-accent text-xs sm:text-sm font-mono">{exp.period}</span>
                 </div>
 
                 {/* Company & Role */}
-                <h3 className="text-3xl md:text-4xl font-bold mb-2">{exp.company}</h3>
-                <p className="text-muted-foreground text-lg md:text-xl mb-8">{exp.role}</p>
+                <h3 className="text-xl sm:text-3xl md:text-4xl font-bold mb-2 break-words">{exp.company}</h3>
+                <p className="text-muted-foreground text-base sm:text-lg md:text-xl mb-6 sm:mb-8">{exp.role}</p>
 
                 {/* Skills */}
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-2 sm:gap-3">
                   {exp.skills.map((skill) => (
                     <span
                       key={skill}
-                      className="skill-tag px-3 py-1 text-sm border border-border text-muted-foreground hover:text-accent hover:border-accent/50 transition-colors cursor-default"
+                      className="skill-tag px-2 sm:px-3 py-1 text-xs sm:text-sm border border-border text-muted-foreground hover:text-accent hover:border-accent/50 transition-colors cursor-default"
                     >
                       {skill}
                     </span>

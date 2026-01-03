@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import Image from "next/image"
@@ -23,6 +23,44 @@ const partners = [
     preview: "/images/swiftdev-preview.png",
   },
 ]
+
+function PreloadImage({
+  src,
+  alt,
+  width,
+  height,
+}: {
+  src: string
+  alt: string
+  width: number
+  height: number
+}) {
+  const [isLoaded, setIsLoaded] = useState(false)
+
+  return (
+    <div className="relative w-full">
+      {/* Skeleton loader */}
+      {!isLoaded && (
+        <div
+          className="absolute inset-0 bg-zinc-800 animate-pulse rounded-sm"
+          style={{ aspectRatio: `${width}/${height}` }}
+        >
+          <div className="absolute inset-0 shimmer" />
+        </div>
+      )}
+      <Image
+        src={src || "/placeholder.svg"}
+        alt={alt}
+        width={width}
+        height={height}
+        className={`w-full h-auto object-contain transition-all duration-500 group-hover:scale-105 ${
+          isLoaded ? "opacity-100" : "opacity-0"
+        }`}
+        onLoad={() => setIsLoaded(true)}
+      />
+    </div>
+  )
+}
 
 export default function Partners() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -66,7 +104,7 @@ export default function Partners() {
   }, [])
 
   return (
-    <section ref={sectionRef} className="py-24 px-6 border-t border-border">
+    <section ref={sectionRef} className="py-24 px-4 sm:px-6 border-t border-border overflow-hidden">
       <div className="max-w-6xl mx-auto">
         <h2 ref={titleRef} className="text-xl sm:text-2xl font-medium text-center mb-16 tracking-[0.3em] uppercase">
           Partnered With
@@ -85,7 +123,7 @@ export default function Partners() {
             >
               {/* Logo side */}
               <div className={`flex flex-col ${index % 2 === 1 ? "lg:order-2" : "lg:order-1"}`}>
-                <div className="relative w-full max-w-xs h-24 mb-4 brightness-0 invert group-hover:brightness-100 group-hover:invert-0 transition-all duration-500">
+                <div className="relative w-full max-w-[200px] sm:max-w-xs h-16 sm:h-24 mb-4 brightness-0 invert group-hover:brightness-100 group-hover:invert-0 transition-all duration-500">
                   <Image
                     src={partner.logo || "/placeholder.svg"}
                     alt={partner.name}
@@ -99,13 +137,12 @@ export default function Partners() {
 
               {/* Preview image side */}
               <div className={`relative overflow-hidden rounded-sm ${index % 2 === 1 ? "lg:order-1" : "lg:order-2"}`}>
-                <div className="relative w-full overflow-hidden bg-zinc-900/50 rounded-sm">
-                  <Image
+                <div className="relative w-full max-w-full overflow-hidden bg-zinc-900/50 rounded-sm">
+                  <PreloadImage
                     src={partner.preview || "/placeholder.svg"}
                     alt={`${partner.name} website preview`}
                     width={1512}
                     height={800}
-                    className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-105"
                   />
                   {/* Overlay gradient */}
                   <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

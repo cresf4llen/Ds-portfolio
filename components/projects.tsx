@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import Image from "next/image"
@@ -50,10 +50,14 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
   const cardRef = useRef<HTMLDivElement>(null)
   const imageRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
+  const [imageLoaded, setImageLoaded] = useState(false)
+  const animationTriggeredRef = useRef(false)
 
   useEffect(() => {
+    if (!imageLoaded || animationTriggeredRef.current) return
+    animationTriggeredRef.current = true
+
     const ctx = gsap.context(() => {
-      // Image reveal animation
       gsap.from(imageRef.current, {
         scrollTrigger: {
           trigger: cardRef.current,
@@ -65,7 +69,6 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
         ease: "power4.inOut",
       })
 
-      // Content slide in
       gsap.from(contentRef.current?.children || [], {
         scrollTrigger: {
           trigger: cardRef.current,
@@ -82,7 +85,7 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
     }, cardRef)
 
     return () => ctx.revert()
-  }, [])
+  }, [imageLoaded])
 
   const isEven = index % 2 === 0
 
@@ -91,13 +94,22 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
       <div
         ref={imageRef}
         className={`md:col-span-7 relative aspect-video overflow-hidden bg-secondary ${isEven ? "md:order-1" : "md:order-2"}`}
-        style={{ clipPath: "inset(0 0 0 0)" }}
+        style={{ clipPath: imageLoaded ? "inset(0 0 0 0)" : "inset(0 100% 0 0)" }}
       >
+        {!imageLoaded && (
+          <div className="absolute inset-0 bg-secondary animate-pulse">
+            <div className="absolute inset-0 bg-gradient-to-r from-secondary via-muted/20 to-secondary skeleton-shimmer" />
+          </div>
+        )}
         <Image
           src={project.image || "/placeholder.svg"}
           alt={project.title}
           fill
-          className="object-contain hover:scale-105 transition-transform duration-700"
+          className={`object-contain hover:scale-105 transition-all duration-700 ${
+            imageLoaded ? "opacity-100" : "opacity-0"
+          }`}
+          onLoad={() => setImageLoaded(true)}
+          priority={index === 0}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background/50 to-transparent" />
       </div>

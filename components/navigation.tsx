@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState, useRef } from "react"
+import { Mail } from "lucide-react"
 import gsap from "gsap"
 
 const navItems = [
@@ -9,6 +10,8 @@ const navItems = [
   { label: "Experience", href: "#experience" },
   { label: "Contact", href: "#contact" },
 ]
+
+const EMAIL = "dachisebiskveradze7@gmail.com"
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -80,6 +83,14 @@ export default function Navigation() {
                 {item.label}
               </a>
             ))}
+
+            <a
+              href={`mailto:${EMAIL}`}
+              className="flex items-center gap-2 text-sm text-muted-foreground hover:text-accent transition-colors"
+            >
+              <Mail className="w-4 h-4" />
+              <span className="hidden lg:inline">{EMAIL}</span>
+            </a>
           </div>
 
           {/* Mobile Menu Button */}
@@ -108,6 +119,16 @@ export default function Navigation() {
                 {item.label}
               </a>
             ))}
+
+            <div className="pt-2 border-t border-border">
+              <a
+                href={`mailto:${EMAIL}`}
+                className="flex items-center gap-2 text-sm text-muted-foreground hover:text-accent transition-colors"
+              >
+                <Mail className="w-4 h-4" />
+                <span className="text-xs">{EMAIL}</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>

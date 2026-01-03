@@ -12,7 +12,7 @@ import CustomCursor from "@/components/cursor"
 export default function Home() {
   return (
     <SmoothScroll>
-      <main className="bg-background min-h-screen">
+      <main className="bg-background min-h-screen overflow-x-hidden">
         <CustomCursor />
         <Navigation />
         <Hero />

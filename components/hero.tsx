@@ -139,15 +139,21 @@ export default function Hero() {
 
         <div
           ref={taglineRef}
-          className="mt-8 md:mt-12 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-muted-foreground opacity-0"
+          className="mt-8 md:mt-12 flex flex-col items-center justify-center gap-3 md:gap-4 opacity-0"
         >
-          <span className="text-accent font-mono text-lg md:text-xl">{"{"}</span>
-          <span className="text-sm md:text-base lg:text-lg tracking-wide uppercase">Fullstack Developer</span>
-          <span className="hidden sm:inline text-accent">•</span>
-          <span className="text-sm md:text-base lg:text-lg tracking-wide uppercase">Angular & React</span>
-          <span className="hidden sm:inline text-accent">•</span>
-          <span className="text-sm md:text-base lg:text-lg tracking-wide uppercase">WebGL Animations</span>
-          <span className="text-accent font-mono text-lg md:text-xl">{"}"}</span>
+          <span className="text-sm sm:text-base md:text-lg lg:text-xl tracking-wide uppercase text-foreground/80">
+            Fullstack Developer
+          </span>
+
+          <div className="flex items-center gap-3 md:gap-4">
+            <span className="text-sm sm:text-base md:text-lg lg:text-xl tracking-wide uppercase text-foreground/60">
+              Angular & React
+            </span>
+            <span className="text-accent text-lg">•</span>
+            <span className="text-sm sm:text-base md:text-lg lg:text-xl tracking-wide uppercase text-foreground/60">
+              WebGL Animations
+            </span>
+          </div>
         </div>
 
         <div ref={buttonsRef} className="mt-12 md:mt-16 flex items-center justify-center gap-4 md:gap-6">

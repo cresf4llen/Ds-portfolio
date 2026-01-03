@@ -123,6 +123,12 @@
   body {
     @apply bg-background text-foreground;
   }
+  /* Prevent horizontal overflow on html and body */
+  html,
+  body {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
 }
 
 /* Custom scrollbar and smooth scroll */
@@ -197,4 +203,18 @@ html {
 
 .animate-pulse-glow {
   animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Added skeleton shimmer animation for image preloader */
+@keyframes skeleton-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.skeleton-shimmer {
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
 }
