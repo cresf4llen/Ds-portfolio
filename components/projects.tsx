@@ -16,33 +16,33 @@ const projects = [
     description:
       "Full-stack social platform with real-time video connections. Built production applications processing payments and supporting hundreds of concurrent video users.",
     tags: ["Angular", "React Native", "TypeScript", "WebRTC"],
-    image: "/images/screenshot-202025-12-25-20163709.png",
+    image: "/images/flinkos-webapp.png",
     year: "2024",
     type: "Website & Mobile App",
   },
   {
     id: 2,
-    title: "DevHealth",
-    subtitle: "AI Wellness Extension",
+    title: "Portfolio Website",
+    subtitle: "Interior Designer Portfolio",
     description:
-      "Browser extension helping developers build sustainable focus routines with AI wellness support. Prevents burnout with guided focus sessions and recovery reminders.",
-    tags: ["React", "TypeScript", "AI Integration", "Chrome Extension"],
-    image: "/images/screenshot-202025-12-25-20163738.png",
+      "Portfolio website for Eka Papamichail, a Georgian interior designer. Showcasing elegant residential projects with an immersive gallery experience and smooth animations.",
+    tags: ["Next.js", "React", "GSAP", "Framer Motion"],
+    image: "/images/eka-papamichail-portfolio.png",
     year: "2025",
-    type: "Extension & Website",
-    url: "https://www.devhealth.online",
+    type: "Portfolio Website",
+    url: "https://eka-papamichail.vercel.app",
   },
   {
     id: 3,
-    title: "SwiftDev Agency",
-    subtitle: "Development Agency",
+    title: "DevHealth",
+    subtitle: "AI Wellness Platform",
     description:
-      "Founded and lead a development agency serving international clients with professional digital solutions. Delivering quality development fast and efficient.",
-    tags: ["Next.js", "React", "Supabase", "GSAP"],
-    image: "/images/screenshot-202025-12-25-20163725.png",
-    year: "2024-25",
-    type: "Agency",
-    url: "https://www.swiftdev.agency",
+      "Full-stack wellness platform helping developers guard against burnout with AI-powered focus sessions and recovery reminders. Features real-time analytics tracking 48k+ focus sessions and burnout prevention alerts.",
+    tags: ["Next.js", "React", "TypeScript", "AI SDK"],
+    image: "/images/devhealth-website.png",
+    year: "2025",
+    type: "Web App & Extension",
+    url: "https://www.devhealth.online",
   },
 ]
 
@@ -97,7 +97,7 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
           src={project.image || "/placeholder.svg"}
           alt={project.title}
           fill
-          className="object-cover object-top hover:scale-105 transition-transform duration-700"
+          className="object-contain hover:scale-105 transition-transform duration-700"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background/50 to-transparent" />
       </div>

@@ -237,12 +237,6 @@ export default function Experience() {
           </div>
         ))}
       </div>
-
-      {/* Scroll hint */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-muted-foreground">
-        <span className="text-xs font-mono uppercase tracking-widest">Scroll</span>
-        <div className="w-[1px] h-8 bg-gradient-to-b from-accent to-transparent animate-pulse" />
-      </div>
     </section>
   )
 }

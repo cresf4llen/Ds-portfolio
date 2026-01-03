@@ -13,14 +13,14 @@ const partners = [
     type: "Videography Company",
     logo: "/images/papa-production-20logo-20no-20bg.png",
     url: "https://www.papa-production.com",
-    preview: "/papa-production-videography-website-dark-elegant-i.jpg",
+    preview: "/images/papa-production-preview.png",
   },
   {
     name: "Swift Development",
     type: "Agency",
     logo: "/images/swiftdevlogo-20no-20bg.png",
     url: "https://www.swiftdev.agency",
-    preview: "/swiftdev-digital-agency-website-dark-with-dotted-g.jpg",
+    preview: "/images/swiftdev-preview.png",
   },
 ]
 
@@ -99,12 +99,13 @@ export default function Partners() {
 
               {/* Preview image side */}
               <div className={`relative overflow-hidden rounded-sm ${index % 2 === 1 ? "lg:order-1" : "lg:order-2"}`}>
-                <div className="relative aspect-[3/2] w-full overflow-hidden">
+                <div className="relative w-full overflow-hidden bg-zinc-900/50 rounded-sm">
                   <Image
                     src={partner.preview || "/placeholder.svg"}
                     alt={`${partner.name} website preview`}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    width={1512}
+                    height={800}
+                    className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-105"
                   />
                   {/* Overlay gradient */}
                   <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
