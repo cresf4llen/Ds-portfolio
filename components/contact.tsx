@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 
@@ -31,6 +31,44 @@ export default function Contact() {
   const sectionRef = useRef<HTMLElement>(null)
   const cardRef = useRef<HTMLDivElement>(null)
   const lettersRef = useRef<HTMLDivElement>(null)
+  const [copied, setCopied] = useState(false)
+  const copiedTextRef = useRef<HTMLSpanElement>(null)
+
+  const handleCopyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText("dachisebiskveradze7@gmail.com")
+      setCopied(true)
+    } catch (err) {
+      console.error("Failed to copy email:", err)
+    }
+  }
+
+  // Animate the copied text when it appears
+  useEffect(() => {
+    if (copied && copiedTextRef.current) {
+      // Animate in
+      gsap.fromTo(
+        copiedTextRef.current,
+        { opacity: 0, y: 10, scale: 0.9 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(1.7)" }
+      )
+
+      // Animate out after 2.5 seconds
+      const timeout = setTimeout(() => {
+        if (copiedTextRef.current) {
+          gsap.to(copiedTextRef.current, {
+            opacity: 0,
+            y: -10,
+            duration: 0.3,
+            ease: "power2.in",
+            onComplete: () => setCopied(false),
+          })
+        }
+      }, 2500)
+
+      return () => clearTimeout(timeout)
+    }
+  }, [copied])
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -117,7 +155,54 @@ export default function Contact() {
             Got a project in mind? Let's create something amazing together. Drop me a line and let's chat.
           </p>
 
-          {/* Email with mailto */}
+          {/* Let's Talk Button */}
+          <div className="flex items-center gap-4">
+            <button
+              onClick={handleCopyEmail}
+              className="group relative inline-flex items-center gap-2 px-8 py-4 bg-accent text-background font-semibold text-lg rounded-full overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-[0_0_40px_rgba(var(--accent-rgb),0.3)]"
+            >
+              <span className="relative z-10">Let's Talk</span>
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="relative z-10 transition-transform duration-300 group-hover:translate-x-1"
+              >
+                <path d="M5 12h14" />
+                <path d="m12 5 7 7-7 7" />
+              </svg>
+              <div className="absolute inset-0 bg-gradient-to-r from-accent via-accent to-accent/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            </button>
+            
+            {/* Copied confirmation */}
+            {copied && (
+              <span
+                ref={copiedTextRef}
+                className="inline-flex items-center gap-2 text-accent font-medium"
+              >
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                Email copied!
+              </span>
+            )}
+          </div>
+
+          {/* Email display - commented out
           <div>
             <a
               href="mailto:dachisebiskveradze7@gmail.com"
@@ -142,6 +227,7 @@ export default function Contact() {
               </span>
             </a>
           </div>
+          */}
 
           {/* Social links */}
           <div className="flex items-center gap-4 pt-6 border-t border-foreground/10 mt-8">
