@@ -34,7 +34,7 @@ const experiences = [
     period: "25",
     company: "KooberCoders",
     role: "Internship",
-    description: "Worked on cutting-edge projects using modern frameworks, implemented 3D visualizations with Three.js, and contributed to interactive web experiences with advanced animations.",
+    description: "Developed the company website with WebGL and GSAP animations, creating immersive interactive experiences with modern web technologies.",
     skills: ["Angular", "React", "React Native", "Three.js", "GSAP", "TypeScript"],
     url: "https://koobercoders.com/",
   },
