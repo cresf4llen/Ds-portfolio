@@ -24,6 +24,7 @@ export const metadata: Metadata = {
     icon: "/favicon.png",
     apple: "/apple-icon.png",
   },
+  metadataBase: new URL("https://dachiseb.com"),
   openGraph: {
     title: "Dachi Sebiskveradze | Fullstack Developer",
     description: "Georgian Fullstack Developer specializing in Angular, React, and WebGL Animations.",
@@ -31,7 +32,7 @@ export const metadata: Metadata = {
     siteName: "Dachi Sebiskveradze Portfolio",
     images: [
       {
-        url: "https://dachiseb.com/images/cover%201.PNG",
+        url: "/og-cover.png",
         width: 1200,
         height: 630,
         alt: "Dachi Sebiskveradze - Fullstack Developer Portfolio",
@@ -44,7 +45,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Dachi Sebiskveradze | Fullstack Developer",
     description: "Georgian Fullstack Developer specializing in Angular, React, and WebGL Animations.",
-    images: ["https://dachiseb.com/images/cover%201.PNG"],
+    images: ["/og-cover.png"],
   },
   generator: "v0.app",
 }
