@@ -16,7 +16,7 @@ const projects = [
     description:
       "Full-stack social platform with real-time video connections. Built production applications processing payments and supporting hundreds of concurrent video users.",
     tags: ["Angular", "React Native", "TypeScript", "WebRTC"],
-    image: "/images/flinkos-webapp.png",
+    image: "/images/flinkos cover.PNG",
     year: "2024",
     type: "Website & Mobile App",
     url: "https://www.flinkos.com/",
@@ -89,21 +89,22 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
   }, [imageLoaded])
 
   const isEven = index % 2 === 0
+  const isFlinkos = project.id === 1
 
   return (
-    <div ref={cardRef} className="grid md:grid-cols-12 gap-8 items-center py-16 md:py-24">
+    <div ref={cardRef} className={`grid md:grid-cols-12 ${isFlinkos ? "gap-1" : "gap-2"} items-center py-16 md:py-24`}>
       {project.url ? (
         <a
           href={project.url}
           target="_blank"
           rel="noopener noreferrer"
-          className={`md:col-span-7 relative aspect-video overflow-hidden bg-secondary ${isEven ? "md:order-1" : "md:order-2"} cursor-pointer group`}
+          className={`md:col-span-7 relative aspect-video overflow-hidden ${isEven ? "md:order-1" : "md:order-2"} cursor-pointer group`}
           style={{ clipPath: imageLoaded ? "inset(0 0 0 0)" : "inset(0 100% 0 0)" }}
           ref={imageRef}
         >
           {!imageLoaded && (
-            <div className="absolute inset-0 bg-secondary animate-pulse">
-              <div className="absolute inset-0 bg-gradient-to-r from-secondary via-muted/20 to-secondary skeleton-shimmer" />
+            <div className="absolute inset-0 animate-pulse">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-muted/20 to-transparent skeleton-shimmer" />
             </div>
           )}
           <Image
@@ -121,12 +122,12 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
       ) : (
         <div
           ref={imageRef}
-          className={`md:col-span-7 relative aspect-video overflow-hidden bg-secondary ${isEven ? "md:order-1" : "md:order-2"}`}
+          className={`md:col-span-7 relative aspect-video overflow-hidden ${isEven ? "md:order-1" : "md:order-2"}`}
           style={{ clipPath: imageLoaded ? "inset(0 0 0 0)" : "inset(0 100% 0 0)" }}
         >
           {!imageLoaded && (
-            <div className="absolute inset-0 bg-secondary animate-pulse">
-              <div className="absolute inset-0 bg-gradient-to-r from-secondary via-muted/20 to-secondary skeleton-shimmer" />
+            <div className="absolute inset-0 animate-pulse">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-muted/20 to-transparent skeleton-shimmer" />
             </div>
           )}
           <Image
@@ -143,7 +144,7 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
         </div>
       )}
 
-      <div ref={contentRef} className={`md:col-span-5 ${isEven ? "md:order-2 md:pl-8" : "md:order-1 md:pr-8"}`}>
+      <div ref={contentRef} className={`md:col-span-5 ${isEven ? `md:order-2 ${isFlinkos ? "md:pl-0" : "md:pl-8"}` : "md:order-1 md:pr-8"}`}>
         <div className="flex items-center gap-4 mb-4">
           <span className="text-accent text-sm font-medium">{project.year}</span>
           <span className="text-muted-foreground text-sm">{project.type}</span>

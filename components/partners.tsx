@@ -21,7 +21,7 @@ const partners = [
     type: "Agency",
     logo: "/images/swiftdevlogo-20no-20bg.png",
     url: "https://www.swiftdev.agency/",
-    preview: "/images/swiftdev-preview.png",
+    preview: "/images/swiftdev cover.PNG",
     logoSize: "h-24 sm:h-32",
   },
 ]
