@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     siteName: "Dachi Sebiskveradze Portfolio",
     images: [
       {
-        url: "/og-cover.png",
+        url: "https://dachiseb.com/og-cover.png",
         width: 1200,
         height: 630,
         alt: "Dachi Sebiskveradze - Fullstack Developer Portfolio",
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Dachi Sebiskveradze | Fullstack Developer",
     description: "Georgian Fullstack Developer specializing in Angular, React, and WebGL Animations.",
-    images: ["/og-cover.png"],
+    images: ["https://dachiseb.com/og-cover.png"],
   },
   generator: "v0.app",
 }
