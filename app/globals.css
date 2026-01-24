@@ -218,3 +218,45 @@ html {
 .skeleton-shimmer {
   animation: skeleton-shimmer 1.5s ease-in-out infinite;
 }
+
+/* Orbital tech stack animations */
+@keyframes orbit-spin {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes orbit-spin-reverse {
+  from {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+}
+
+@keyframes float-particle-global {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translate(10px, -10px) scale(1.5);
+    opacity: 0.8;
+  }
+}
+
+.animate-orbit {
+  animation: orbit-spin 20s linear infinite;
+}
+
+.animate-orbit-reverse {
+  animation: orbit-spin-reverse 25s linear infinite;
+}
+
+.animate-float-particle {
+  animation: float-particle-global 4s ease-in-out infinite;
+}

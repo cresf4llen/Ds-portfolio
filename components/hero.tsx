@@ -62,12 +62,64 @@ export default function Hero() {
   const taglineRef = useRef<HTMLDivElement>(null)
   const buttonsRef = useRef<HTMLDivElement>(null)
   const scrollIndicatorRef = useRef<HTMLDivElement>(null)
+  const hasLoggedRef = useRef(false)
   const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
     // Trigger animations after mount
     const timer = setTimeout(() => setIsLoaded(true), 100)
     return () => clearTimeout(timer)
+  }, [])
+
+  useEffect(() => {
+    if (hasLoggedRef.current) return
+    hasLoggedRef.current = true
+
+    const pixel = "\u2588"
+    const glyphs: Record<string, string[]> = {
+      A: [" ### ", "#   #", "#   #", "#####", "#   #", "#   #", "#   #"],
+      B: ["#### ", "#   #", "#   #", "#### ", "#   #", "#   #", "#### "],
+      C: [" ####", "#    ", "#    ", "#    ", "#    ", "#    ", " ####"],
+      D: ["#### ", "#   #", "#   #", "#   #", "#   #", "#   #", "#### "],
+      E: ["#####", "#    ", "#    ", "#### ", "#    ", "#    ", "#####"],
+      H: ["#   #", "#   #", "#   #", "#####", "#   #", "#   #", "#   #"],
+      I: ["#####", "  #  ", "  #  ", "  #  ", "  #  ", "  #  ", "#####"],
+      K: ["#   #", "#  # ", "# #  ", "##   ", "# #  ", "#  # ", "#   #"],
+      R: ["#### ", "#   #", "#   #", "#### ", "# #  ", "#  # ", "#   #"],
+      S: [" ####", "#    ", "#    ", " ### ", "    #", "    #", "#### "],
+      V: ["#   #", "#   #", "#   #", "#   #", "#   #", " # # ", "  #  "],
+      Z: ["#####", "   # ", "  #  ", " #   ", "#    ", "#    ", "#####"],
+      " ": ["     ", "     ", "     ", "     ", "     ", "     ", "     "],
+    }
+
+    const renderWord = (word: string) => {
+      const rows = Array.from({ length: 7 }, () => "")
+      for (const char of word.toUpperCase()) {
+        const glyph = glyphs[char] ?? glyphs[" "]
+        for (let i = 0; i < rows.length; i += 1) {
+          rows[i] += `${glyph[i]} `
+        }
+      }
+      return rows.map((row) => row.replace(/#/g, pixel).replace(/\s+$/, ""))
+    }
+
+    const fullName = "Dachi Sebiskveradze"
+    const [firstName, ...rest] = fullName.split(" ")
+    const lastName = rest.join(" ")
+    const top = renderWord(firstName)
+    const bottom = renderWord(lastName)
+    const baseStyle = [
+      "font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+      "font-size: 12px",
+      "line-height: 1",
+      "letter-spacing: 0.02em",
+      "white-space: pre",
+      "text-shadow: 1px 0 #0B0F14, 0 1px #0B0F14, 1px 1px #0B0F14, 2px 2px #0B0F14",
+    ].join("; ")
+    const topStyle = `${baseStyle}; color: #E84C30`
+    const bottomStyle = `${baseStyle}; color: #E5E7EB`
+
+    console.log(`%c${top.join("\n")}\n%c${bottom.join("\n")}`, topStyle, bottomStyle)
   }, [])
 
   useEffect(() => {
