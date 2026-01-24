@@ -8,42 +8,89 @@ import GlowButton from "./glow-button"
 
 gsap.registerPlugin(ScrollTrigger)
 
+// Detect mobile for simplified animations
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768 || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent))
+    }
+    checkMobile()
+    window.addEventListener("resize", checkMobile)
+    return () => window.removeEventListener("resize", checkMobile)
+  }, [])
+
+  return isMobile
+}
+
 function AnimatedText({
   text,
   className,
   delay = 0,
   stagger = 0.03,
+  isMobile = false,
 }: {
   text: string
   className?: string
   delay?: number
   stagger?: number
+  isMobile?: boolean
 }) {
   const containerRef = useRef<HTMLSpanElement>(null)
 
   useEffect(() => {
     if (!containerRef.current) return
 
-    const chars = containerRef.current.querySelectorAll(".char")
+    if (isMobile) {
+      // Simplified animation for mobile: fade + slide without 3D transforms
+      // Animate the whole text block instead of individual characters
+      gsap.fromTo(
+        containerRef.current,
+        {
+          y: 40,
+          opacity: 0,
+        },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: "power3.out",
+          delay: delay,
+        },
+      )
+    } else {
+      // Full per-character 3D animation for desktop
+      const chars = containerRef.current.querySelectorAll(".char")
 
-    gsap.fromTo(
-      chars,
-      {
-        y: 120,
-        opacity: 0,
-        rotateX: -90,
-      },
-      {
-        y: 0,
-        opacity: 1,
-        rotateX: 0,
-        duration: 1,
-        ease: "power4.out",
-        stagger: stagger,
-        delay: delay,
-      },
+      gsap.fromTo(
+        chars,
+        {
+          y: 120,
+          opacity: 0,
+          rotateX: -90,
+        },
+        {
+          y: 0,
+          opacity: 1,
+          rotateX: 0,
+          duration: 1,
+          ease: "power4.out",
+          stagger: stagger,
+          delay: delay,
+        },
+      )
+    }
+  }, [delay, stagger, isMobile])
+
+  // On mobile, render text without per-character spans to reduce DOM nodes
+  if (isMobile) {
+    return (
+      <span ref={containerRef} className={className} style={{ opacity: 0 }}>
+        {text}
+      </span>
     )
-  }, [delay, stagger])
+  }
 
   return (
     <span ref={containerRef} className={className} style={{ perspective: "1000px" }}>
@@ -64,6 +111,7 @@ export default function Hero() {
   const scrollIndicatorRef = useRef<HTMLDivElement>(null)
   const hasLoggedRef = useRef(false)
   const [isLoaded, setIsLoaded] = useState(false)
+  const isMobile = useIsMobile()
 
   useEffect(() => {
     // Trigger animations after mount
@@ -126,19 +174,23 @@ export default function Hero() {
     if (!isLoaded) return
 
     const ctx = gsap.context(() => {
+      // Faster, simpler animations on mobile
+      const baseDuration = isMobile ? 0.6 : 1
+      const baseDelay = isMobile ? 0.8 : 1.2
+
       gsap.fromTo(
         taglineRef.current,
-        { y: 50, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, ease: "power3.out", delay: 1.2 },
+        { y: isMobile ? 30 : 50, opacity: 0 },
+        { y: 0, opacity: 1, duration: baseDuration, ease: "power3.out", delay: baseDelay },
       )
 
       gsap.fromTo(
         buttonsRef.current?.children || [],
-        { y: 30, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8, ease: "power3.out", stagger: 0.15, delay: 1.5 },
+        { y: isMobile ? 20 : 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: isMobile ? 0.5 : 0.8, ease: "power3.out", stagger: 0.1, delay: baseDelay + 0.3 },
       )
 
-      gsap.fromTo(scrollIndicatorRef.current, { opacity: 0 }, { opacity: 1, duration: 1, delay: 2 })
+      gsap.fromTo(scrollIndicatorRef.current, { opacity: 0 }, { opacity: 1, duration: baseDuration, delay: baseDelay + 0.8 })
 
       gsap.to(scrollIndicatorRef.current?.querySelector(".scroll-line"), {
         scaleY: 1,
@@ -148,21 +200,34 @@ export default function Hero() {
         yoyo: true,
       })
 
-      gsap.to(overlayRef.current, {
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: 1,
-        },
-        y: -150,
-        opacity: 0,
-        scale: 0.95,
-      })
+      // Simplified scroll parallax on mobile - just fade out, no scale/transform
+      if (isMobile) {
+        gsap.to(overlayRef.current, {
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top top",
+            end: "bottom top",
+            scrub: 2, // Higher scrub value = smoother but less responsive
+          },
+          opacity: 0,
+        })
+      } else {
+        gsap.to(overlayRef.current, {
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top top",
+            end: "bottom top",
+            scrub: 1,
+          },
+          y: -150,
+          opacity: 0,
+          scale: 0.95,
+        })
+      }
     }, containerRef)
 
     return () => ctx.revert()
-  }, [isLoaded])
+  }, [isLoaded, isMobile])
 
   return (
     <section ref={containerRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -178,6 +243,7 @@ export default function Hero() {
             className="block text-[15vw] md:text-[12vw] lg:text-[10vw] font-bold tracking-tighter leading-[0.85] text-foreground"
             delay={0.2}
             stagger={0.05}
+            isMobile={isMobile}
           />
         </h1>
         <h1 className="overflow-hidden">
@@ -186,6 +252,7 @@ export default function Hero() {
             className="block text-[8vw] md:text-[6vw] lg:text-[5vw] font-bold tracking-tight leading-[0.9] text-accent"
             delay={0.5}
             stagger={0.03}
+            isMobile={isMobile}
           />
         </h1>
 
