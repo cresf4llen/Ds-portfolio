@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import Image from "next/image"
+import Link from "next/link"
 import GlowButton from "./glow-button"
 
 gsap.registerPlugin(ScrollTrigger)
@@ -20,6 +21,7 @@ const projects = [
     year: "2024",
     type: "Website & Mobile App",
     url: "https://www.flinkos.com/",
+    pageUrl: "/projects/flinkos",
   },
   {
     id: 2,
@@ -32,6 +34,7 @@ const projects = [
     year: "2025",
     type: "Portfolio Website",
     url: "https://ekapapamichail.vercel.app/",
+    pageUrl: "/projects/portfolio-website",
   },
   {
     id: 3,
@@ -44,6 +47,33 @@ const projects = [
     year: "2025",
     type: "Web App & Extension",
     url: "https://www.devhealth.online",
+    pageUrl: "/projects/devhealth",
+  },
+  {
+    id: 4,
+    title: "Papa Production",
+    subtitle: "Videography & Production Services",
+    description:
+      "Professional videography and production services company showcasing creative expertise in video production and storytelling with stunning visuals and smooth animations.",
+    tags: ["Next.js", "React", "GSAP", "Video"],
+    image: "/images/papa-production-preview.png",
+    year: "2024",
+    type: "Business Website",
+    url: "https://www.papa-production.com/",
+    pageUrl: "/projects/papa-production",
+  },
+  {
+    id: 5,
+    title: "Swiftdev Studio",
+    subtitle: "Digital Agency & Development Studio",
+    description:
+      "Digital agency specializing in modern web development and design services. Features a sleek, dark aesthetic showcasing cutting-edge digital experiences.",
+    tags: ["Next.js", "React", "TypeScript", "Design"],
+    image: "/images/swiftdev-preview.png",
+    year: "2024",
+    type: "Agency Website",
+    url: "https://swiftdevstudio.vercel.app/",
+    pageUrl: "/projects/swiftdev-studio",
   },
 ]
 
@@ -163,22 +193,42 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
           ))}
         </div>
 
-        {project.url && (
-          <GlowButton href={project.url} variant="outline" size="sm" external>
-            View Project
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              className="group-hover:translate-x-1 transition-transform"
-            >
-              <path d="M7 17L17 7M17 7H7M17 7V17" />
-            </svg>
-          </GlowButton>
-        )}
+        <div className="flex flex-wrap gap-4">
+          {project.pageUrl && (
+            <Link href={project.pageUrl}>
+              <GlowButton variant="default" size="sm">
+                Learn More
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  className="group-hover:translate-x-1 transition-transform"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </GlowButton>
+            </Link>
+          )}
+          {project.url && (
+            <GlowButton href={project.url} variant="outline" size="sm" external>
+              View Project
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                className="group-hover:translate-x-1 transition-transform"
+              >
+                <path d="M7 17L17 7M17 7H7M17 7V17" />
+              </svg>
+            </GlowButton>
+          )}
+        </div>
       </div>
     </div>
   )
