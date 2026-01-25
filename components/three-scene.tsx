@@ -1,7 +1,7 @@
 "use client"
 
-import { useRef, useMemo, useEffect, useState } from "react"
-import { Canvas, useFrame } from "@react-three/fiber"
+import { useRef, useMemo, useEffect, useState, Suspense } from "react"
+import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import { Float, MeshDistortMaterial } from "@react-three/drei"
 import type * as THREE from "three"
 
@@ -19,6 +19,46 @@ function useIsMobile() {
   }, [])
 
   return isMobile
+}
+
+// Hook to pause rendering when not visible
+function useVisibility() {
+  const [isVisible, setIsVisible] = useState(true)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting)
+      },
+      { threshold: 0.1 }
+    )
+
+    // Find the hero section to observe
+    const heroSection = document.querySelector('section')
+    if (heroSection) {
+      observer.observe(heroSection)
+    }
+
+    return () => observer.disconnect()
+  }, [])
+
+  return isVisible
+}
+
+// Component to control frame loop based on visibility
+function FrameLoopController({ isVisible }: { isVisible: boolean }) {
+  const { invalidate, clock } = useThree()
+  
+  useEffect(() => {
+    if (!isVisible) {
+      clock.stop()
+    } else {
+      clock.start()
+      invalidate()
+    }
+  }, [isVisible, invalidate, clock])
+
+  return null
 }
 
 function useMousePosition(enabled: boolean) {
@@ -231,11 +271,12 @@ function GridLines() {
   )
 }
 
-function Scene({ isMobile }: { isMobile: boolean }) {
-  const mouseRef = useMousePosition(!isMobile)
+function Scene({ isMobile, isVisible }: { isMobile: boolean; isVisible: boolean }) {
+  const mouseRef = useMousePosition(!isMobile && isVisible)
 
   return (
     <>
+      <FrameLoopController isVisible={isVisible} />
       <ambientLight intensity={0.3} />
       <directionalLight position={[10, 10, 5]} intensity={1.5} />
       {/* Reduce number of lights on mobile */}
@@ -258,24 +299,31 @@ function Scene({ isMobile }: { isMobile: boolean }) {
 
 export default function ThreeScene() {
   const isMobile = useIsMobile()
+  const isVisible = useVisibility()
 
   return (
     <div className="absolute inset-0 z-0">
-      <Canvas
-        camera={{ position: [0, 0, 12], fov: 50 }}
-        gl={{ 
-          antialias: !isMobile, // Disable antialiasing on mobile
-          alpha: true,
-          powerPreference: isMobile ? "low-power" : "high-performance",
-        }}
-        // Limit pixel ratio on mobile to reduce GPU load
-        dpr={isMobile ? [1, 1.5] : [1, 2]}
-        // Performance mode - animations require continuous rendering
-        performance={{ min: 0.5 }}
-        style={{ background: "transparent" }}
-      >
-        <Scene isMobile={isMobile} />
-      </Canvas>
+      <Suspense fallback={<div className="absolute inset-0 bg-background" />}>
+        <Canvas
+          camera={{ position: [0, 0, 12], fov: 50 }}
+          gl={{ 
+            antialias: !isMobile, // Disable antialiasing on mobile
+            alpha: true,
+            powerPreference: isMobile ? "low-power" : "high-performance",
+            // Reduce GPU memory usage
+            preserveDrawingBuffer: false,
+          }}
+          // Limit pixel ratio to reduce GPU load
+          dpr={isMobile ? [1, 1] : [1, 1.5]}
+          // Performance mode with adaptive quality
+          performance={{ min: 0.3, max: 0.8, debounce: 200 }}
+          style={{ background: "transparent" }}
+          // Use on-demand rendering when not visible
+          frameloop={isVisible ? "always" : "never"}
+        >
+          <Scene isMobile={isMobile} isVisible={isVisible} />
+        </Canvas>
+      </Suspense>
     </div>
   )
 }

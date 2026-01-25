@@ -26,7 +26,7 @@ export default function FlinkosPage() {
 
         <div className="relative aspect-video w-full mb-12 overflow-hidden rounded-lg">
           <Image
-            src="/images/flinkos cover.PNG"
+            src="/images/flinkos-cover.webp"
             alt="Flinkos"
             fill
             className="object-cover"

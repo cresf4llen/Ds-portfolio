@@ -26,7 +26,7 @@ export default function DevHealthPage() {
 
         <div className="relative aspect-video w-full mb-12 overflow-hidden rounded-lg">
           <Image
-            src="/images/devhealth-website.png"
+            src="/images/devhealth-website.webp"
             alt="DevHealth"
             fill
             className="object-cover"

@@ -136,6 +136,18 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Performance optimizations for animated elements */
+.orbit-ring,
+.orbit-icon {
+  will-change: transform;
+  contain: layout style;
+}
+
+/* Reduce paint areas for heavy components */
+canvas {
+  contain: strict;
+}
+
 ::-webkit-scrollbar {
   width: 8px;
 }

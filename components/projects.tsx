@@ -17,7 +17,7 @@ const projects = [
     description:
       "Full-stack social platform with real-time video connections. Built production applications processing payments and supporting hundreds of concurrent video users.",
     tags: ["Angular", "React Native", "TypeScript", "WebRTC"],
-    image: "/images/flinkos cover.PNG",
+    image: "/images/flinkos-cover.webp",
     year: "2024",
     type: "Website & Mobile App",
     url: "https://www.flinkos.com/",
@@ -30,7 +30,7 @@ const projects = [
     description:
       "Portfolio website for Eka Papamichail, a Georgian interior designer. Showcasing elegant residential projects with an immersive gallery experience and smooth animations.",
     tags: ["Next.js", "React", "GSAP", "Framer Motion"],
-    image: "/images/eka-papamichail-portfolio.png",
+    image: "/images/eka-papamichail-portfolio.webp",
     year: "2025",
     type: "Portfolio Website",
     url: "https://ekapapamichail.vercel.app/",
@@ -43,37 +43,11 @@ const projects = [
     description:
       "Full-stack wellness platform helping developers guard against burnout with AI-powered focus sessions and recovery reminders. Features real-time analytics tracking 48k+ focus sessions and burnout prevention alerts.",
     tags: ["Next.js", "React", "TypeScript", "AI SDK"],
-    image: "/images/devhealth-website.png",
+    image: "/images/devhealth-website.webp",
     year: "2025",
     type: "Web App & Extension",
     url: "https://www.devhealth.online",
     pageUrl: "/projects/devhealth",
-  },
-  {
-    id: 4,
-    title: "Papa Production",
-    subtitle: "Videography & Production Services",
-    description:
-      "Professional videography and production services company showcasing creative expertise in video production and storytelling with stunning visuals and smooth animations.",
-    tags: ["Next.js", "React", "GSAP", "Video"],
-    image: "/images/papa-production-preview.png",
-    year: "2024",
-    type: "Business Website",
-    url: "https://www.papa-production.com/",
-    pageUrl: "/projects/papa-production",
-  },
-  {
-    id: 5,
-    title: "Swiftdev Studio",
-    subtitle: "Digital Agency & Development Studio",
-    description:
-      "Digital agency specializing in modern web development and design services. Features a sleek, dark aesthetic showcasing cutting-edge digital experiences.",
-    tags: ["Next.js", "React", "TypeScript", "Design"],
-    image: "/images/swiftdev-preview.png",
-    year: "2024",
-    type: "Agency Website",
-    url: "https://swiftdevstudio.vercel.app/",
-    pageUrl: "/projects/swiftdev-studio",
   },
 ]
 
@@ -128,7 +102,7 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
           href={project.url}
           target="_blank"
           rel="noopener noreferrer"
-          className={`md:col-span-7 relative aspect-video overflow-hidden ${isEven ? "md:order-1" : "md:order-2"} cursor-pointer group`}
+          className={`md:col-span-7 relative aspect-video overflow-hidden ${isEven ? "md:order-1" : "md:order-2"} cursor-pointer group hover:scale-[1.02] transition-transform duration-500`}
           style={{ clipPath: imageLoaded ? "inset(0 0 0 0)" : "inset(0 100% 0 0)" }}
           ref={imageRef}
         >
@@ -141,18 +115,20 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
             src={project.image || "/placeholder.svg"}
             alt={project.title}
             fill
-            className={`object-contain group-hover:scale-105 transition-all duration-700 ${
+            sizes="(max-width: 768px) 100vw, 58vw"
+            className={`object-contain transition-opacity duration-700 ${
               imageLoaded ? "opacity-100" : "opacity-0"
             }`}
             onLoad={() => setImageLoaded(true)}
             priority={index === 0}
+            loading={index === 0 ? "eager" : "lazy"}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background/50 to-transparent" />
         </a>
       ) : (
         <div
           ref={imageRef}
-          className={`md:col-span-7 relative aspect-video overflow-hidden ${isEven ? "md:order-1" : "md:order-2"}`}
+          className={`md:col-span-7 relative aspect-video overflow-hidden ${isEven ? "md:order-1" : "md:order-2"} hover:scale-[1.02] transition-transform duration-500`}
           style={{ clipPath: imageLoaded ? "inset(0 0 0 0)" : "inset(0 100% 0 0)" }}
         >
           {!imageLoaded && (
@@ -164,11 +140,13 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
             src={project.image || "/placeholder.svg"}
             alt={project.title}
             fill
-            className={`object-contain hover:scale-105 transition-all duration-700 ${
+            sizes="(max-width: 768px) 100vw, 58vw"
+            className={`object-contain transition-opacity duration-700 ${
               imageLoaded ? "opacity-100" : "opacity-0"
             }`}
             onLoad={() => setImageLoaded(true)}
             priority={index === 0}
+            loading={index === 0 ? "eager" : "lazy"}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background/50 to-transparent" />
         </div>

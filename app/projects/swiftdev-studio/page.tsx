@@ -26,7 +26,7 @@ export default function SwiftDevStudioPage() {
 
         <div className="relative aspect-video w-full mb-12 overflow-hidden rounded-lg">
           <Image
-            src="/images/swiftdev-preview.png"
+            src="/images/swiftdev-preview.webp"
             alt="Swiftdev Studio"
             fill
             className="object-cover"

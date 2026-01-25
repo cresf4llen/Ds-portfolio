@@ -26,7 +26,7 @@ export default function InteriorDesignerPage() {
 
         <div className="relative aspect-video w-full mb-12 overflow-hidden rounded-lg">
           <Image
-            src="/images/eka-papamichail-portfolio.png"
+            src="/images/eka-papamichail-portfolio.webp"
             alt="Interior Designer Portfolio"
             fill
             className="object-cover"

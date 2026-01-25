@@ -26,7 +26,7 @@ export default function PapaProductionPage() {
 
         <div className="relative aspect-video w-full mb-12 overflow-hidden rounded-lg">
           <Image
-            src="/images/papa-production-preview.png"
+            src="/images/papa-production-preview.webp"
             alt="Papa Production"
             fill
             className="object-cover"
