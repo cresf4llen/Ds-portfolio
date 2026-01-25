@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from "react"
 import { Mail } from "lucide-react"
 import gsap from "gsap"
+import Folder from "./Folder"
 
 const navItems = [
   { label: "About", href: "#about" },
@@ -66,10 +67,20 @@ export default function Navigation() {
     >
       <div className="max-w-6xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          <a href="#" className="text-lg font-bold tracking-tight">
-            <span className="text-foreground">Dachi</span>
-            <span className="text-accent">.</span>
-          </a>
+          <div className="flex items-center gap-0.5">
+            <a href="#" className="text-lg font-bold tracking-tight">
+              <span className="text-foreground">Dachi</span>
+              <span className="text-accent">.</span>
+            </a>
+            <div className="h-6 flex items-center overflow-visible">
+              <Folder 
+                color="#ef4444" 
+                size={0.4} 
+                items={[<div key="doc" className="w-full h-full bg-white rounded-lg"></div>]}
+                href="https://drive.google.com/file/d/1G6Ip26yPngdkiEAYh6gQJg4bTTVYKJnI/view?usp=sharing"
+              />
+            </div>
+          </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
