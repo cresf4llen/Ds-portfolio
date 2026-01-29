@@ -171,7 +171,7 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
           ))}
         </div>
 
-        <div className="flex flex-wrap gap-4">
+        {/* <div className="flex flex-wrap gap-4">
           {project.pageUrl && (
             <Link href={project.pageUrl}>
               <GlowButton variant="default" size="sm">
@@ -206,7 +206,7 @@ function ProjectCard({ project, index }: { project: (typeof projects)[0]; index:
               </svg>
             </GlowButton>
           )}
-        </div>
+        </div> */}
       </div>
     </div>
   )

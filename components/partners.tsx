@@ -143,7 +143,7 @@ export default function Partners() {
                 <span className="text-xs text-muted-foreground/60 mt-1">{partner.url.replace("https://", "")}</span>
                 
                 {/* Buttons */}
-                <div className="flex flex-wrap gap-4 mt-6">
+                {/* <div className="flex flex-wrap gap-4 mt-6">
                   {partner.pageUrl && (
                     <Link href={partner.pageUrl}>
                       <GlowButton variant="primary" size="sm">
@@ -178,7 +178,7 @@ export default function Partners() {
                       </svg>
                     </GlowButton>
                   )}
-                </div>
+                </div> */}
               </div>
 
               {/* Preview image side */}

@@ -77,7 +77,7 @@ export default function Navigation() {
                 color="#ef4444" 
                 size={0.4} 
                 items={[<div key="doc" className="w-full h-full bg-white rounded-lg"></div>]}
-                href="https://drive.google.com/file/d/1d1jj_vWtxli3umd54WRwDnYPY2xDcnXY/view?usp=sharing"
+                href="https://drive.google.com/file/d/1DOpfYtY5I6ujie_uMyiwQoByVVTYP6MI/view?usp=sharing"
               />
             </div>
           </div>
